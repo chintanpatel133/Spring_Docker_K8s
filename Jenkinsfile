@@ -33,6 +33,10 @@ pipeline {
         stage('Build Docker Image') {
             steps {
 		sh 'docker build -t chintan671/mywebapp .'
+	        slackSend channel: '#jenkins-pipeline-demo', 
+			  color: 'good',
+			  message: "Docker image created successfully.",
+                          tokenCredentialId: 'Jenkins-Slack'
             }
         }
         stage('Push Docker Image to DockerHub') {
@@ -40,7 +44,10 @@ pipeline {
 		withCredentials([string(credentialsId: 'DockerHubPwd', variable: 'Password_DockeHub')]) {
             		sh "docker login -u chintan671 -p ${Password_DockeHub}"
  			sh 'docker push chintan671/mywebapp'
-                	echo "push the docker image successfully to Docker Hub."
+                	slackSend channel: '#jenkins-pipeline-demo', 
+			  color: 'good',
+			  message: "Docker image pushed to DockerHub successfully.",
+                          tokenCredentialId: 'Jenkins-Slack'
         	}        	
             }
         }
