@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-k8s  
+spec:
+  selector:
+    matchLabels:
+      app: springboot-k8s
+  replicas: 1
+  template:
+    metadata:
+      name: springboot-k8s
+      labels:
+        app: springboot-k8s
+    spec:
+      containers:
+       - name: springboot-k8s
+         image: chintan671/mywebapp:latest
+         ports:
+          - containerPort: 8080
+            name: k8s-port 
