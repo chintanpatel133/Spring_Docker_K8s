@@ -24,9 +24,9 @@ pipeline {
             steps {
 		withCredentials([string(credentialsId: 'DockerHubPwd', variable: 'Password_DockeHub')]) {
             		sh "docker login -u chintan671 -p ${Password_DockeHub}"
-        	}
-        	sh 'docker push chintan671/mywebapp'
-                echo "push the docker image successfully to Docker Hub."
+ 			sh 'docker push chintan671/mywebapp'
+                	echo "push the docker image successfully to Docker Hub."
+        	}        	
             }
         }
     }
