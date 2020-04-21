@@ -4,20 +4,35 @@ pipeline {
     stages {
         stage('Clone the Project') {
             steps {
+		slackSend channel: '#jenkins-pipeline-demo', 
+			  color: 'good',
+			  message: "New code is available on github. Now started to clone the latest code."
+                          tokenCredentialId: 'slack-demo'
                 checkout scm
-                echo "clone the project successfully."
             }
         }
 	stage('Build the Project') {
             steps {
 		sh 'mvn clean package -Dstyle.color=never'
-                echo "build the project successfully."
+            }
+            post{
+                success{
+                    slackSend channel: '#jenkins-pipeline-demo',
+                            color: 'good',
+                            message: "Build is *${currentBuild.currentResult}:* *Job*: ${env.JOB_NAME} *Build Number*: ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+                            tokenCredentialId: 'slack-demo'
+                }
+                failure{
+                    slackSend channel: '#jenkins-pipeline-demo',
+                            color: 'danger',
+                            message: "Build is *${currentBuild.currentResult}:* *Job*: ${env.JOB_NAME} *Build Number*: ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+                            tokenCredentialId: 'slack-demo'
+                }
             }
         }
         stage('Build Docker Image') {
             steps {
 		sh 'docker build -t chintan671/mywebapp .'
-                echo "build the docker image successfully."
             }
         }
         stage('Push Docker Image to DockerHub') {
