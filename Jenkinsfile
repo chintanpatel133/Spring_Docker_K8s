@@ -4,6 +4,10 @@ pipeline {
     stages {
         stage('Clone the Project') {
             steps {
+		slackSend channel: '#jenkins-pipeline-demo', 
+			  color: 'good',
+			  message: "New code is available on github. Now started to clone the latest code.",
+                          tokenCredentialId: 'Jenkins-Slack'
                 checkout scm
             }
         }
