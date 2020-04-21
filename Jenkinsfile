@@ -15,6 +15,20 @@ pipeline {
             steps {
 		sh 'mvn clean package -Dstyle.color=never'
             }
+	    post{
+                success{
+                    slackSend channel: '#jenkins-pipeline-demo',
+                            color: 'good',
+                            message: "Build is *${currentBuild.currentResult}:* *Job*: ${env.JOB_NAME} *Build Number*: ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+                            tokenCredentialId: 'Jenkins-Slack'
+                }
+                failure{
+                    slackSend channel: '#jenkins-pipeline-demo',
+                            color: 'danger',
+                            message: "Build is *${currentBuild.currentResult}:* *Job*: ${env.JOB_NAME} *Build Number*: ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+                            tokenCredentialId: 'Jenkins-Slack'
+                }
+            }
         }
         stage('Build Docker Image') {
             steps {
