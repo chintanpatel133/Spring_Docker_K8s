@@ -7,6 +7,7 @@ pipeline {
 		slackSend channel: '#jenkins-pipeline-demo', 
 			  color: 'good',
 			  message: "New code is available on github. Now started to clone the latest code.",
+			  teamDomain: 'eiccloud.slack.com',
                           tokenCredentialId: 'slack-demo'
                 checkout scm
             }
@@ -20,13 +21,15 @@ pipeline {
                     slackSend channel: '#jenkins-pipeline-demo',
                             color: 'good',
                             message: "Build is *${currentBuild.currentResult}:* *Job*: ${env.JOB_NAME} *Build Number*: ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
-                            tokenCredentialId: 'slack-demo'
+                            teamDomain: 'eiccloud.slack.com',
+			    tokenCredentialId: 'slack-demo'
                 }
                 failure{
                     slackSend channel: '#jenkins-pipeline-demo',
                             color: 'danger',
                             message: "Build is *${currentBuild.currentResult}:* *Job*: ${env.JOB_NAME} *Build Number*: ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
-                            tokenCredentialId: 'slack-demo'
+                            teamDomain: 'eiccloud.slack.com',
+			    tokenCredentialId: 'slack-demo'
                 }
             }
         }
