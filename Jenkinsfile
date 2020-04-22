@@ -50,13 +50,13 @@ pipeline {
                 success{
                     slackSend channel: '#jenkins-pipeline-demo',
                             color: 'good',
-                            message: "Docker image pushed on Docker Hub successfully",
+                            message: "Docker image pushed on Docker Hub successfully....",
                             tokenCredentialId: 'Jenkins-Slack'
                 }
                 failure{
                     slackSend channel: '#jenkins-pipeline-demo',
                             color: 'danger',
-                            message: "Docker image failed to pushed on Docker Hub successfully",
+                            message: "Docker image failed to pushed on Docker Hub.",
                             tokenCredentialId: 'Jenkins-Slack'
                 }
             }
