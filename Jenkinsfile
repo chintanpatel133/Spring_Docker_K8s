@@ -55,6 +55,10 @@ pipeline {
 	    steps {
 		sh 'kubectl apply -f deployment.yml'
 		sh 'kubectl apply -f service.yml'
+		slackSend channel: '#jenkins-pipeline-demo', 
+			  color: 'good',
+			  message: "Deployment completed successfully....",
+                          tokenCredentialId: 'Jenkins-Slack'
 	    }	    
 	}	
     }
