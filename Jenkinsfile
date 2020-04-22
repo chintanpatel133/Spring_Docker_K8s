@@ -51,5 +51,9 @@ pipeline {
         	}        	
             }
         }
+	stage('Deploy To Kubernetes Cluster') {
+		sh 'kubectl apply -f deployment.yml'
+		sh 'kubectl apply -f service.yml'
+	}	
     }
 }
