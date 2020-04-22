@@ -41,11 +41,11 @@ pipeline {
         }
         stage('Push Docker Image to DockerHub') {
             steps {
-		withCredentials([string(credentialsId: 'DockerHubPwd', variable: 'Password_DockeHub')]) {
+		        withCredentials([string(credentialsId: 'DockerHubPwd', variable: 'Password_DockeHub')]) {
             		sh "docker login -u chintan671 -p ${Password_DockeHub}"
- 			sh 'docker push chintan671/mywebapp'
+ 			    sh 'docker push chintan671/mywebapp'
         	}
-	    post{
+	        post{
                 success{
                     slackSend channel: '#jenkins-pipeline-demo',
                             color: 'good',
