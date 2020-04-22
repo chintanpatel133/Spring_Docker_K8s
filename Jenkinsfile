@@ -44,11 +44,21 @@ pipeline {
 		withCredentials([string(credentialsId: 'DockerHubPwd', variable: 'Password_DockeHub')]) {
             		sh "docker login -u chintan671 -p ${Password_DockeHub}"
  			sh 'docker push chintan671/mywebapp'
-                	slackSend channel: '#jenkins-pipeline-demo', 
-			  color: 'good',
-			  message: "Docker image pushed to DockerHub successfully.",
-                          tokenCredentialId: 'Jenkins-Slack'
-        	}        	
+        	}
+	    post{
+                success{
+                    slackSend channel: '#jenkins-pipeline-demo',
+                            color: 'good',
+                            message: "Docker image pushed on Docker Hub successfully",
+                            tokenCredentialId: 'Jenkins-Slack'
+                }
+                failure{
+                    slackSend channel: '#jenkins-pipeline-demo',
+                            color: 'danger',
+                            message: "Docker image failed to pushed on Docker Hub successfully",
+                            tokenCredentialId: 'Jenkins-Slack'
+                }
+              }    
             }
         }
 	/**    
