@@ -51,6 +51,7 @@ pipeline {
         	}        	
             }
         }
+	/**    
 	stage('Deploy To Kubernetes Cluster') {
 	    steps {
 		sh 'kubectl apply -f deployment.yml'
@@ -60,6 +61,19 @@ pipeline {
 			  message: "Deployment completed successfully....",
                           tokenCredentialId: 'Jenkins-Slack'
 	    }	    
-	}	
+	} **/	    
+	stage('Deploy To Kubernetes Cluster') {
+	    kubernetesDeploy(
+		    configs: 'deployment.yml,service.yml',
+		    kubeconfigId: 'K8s_Config',
+		    enableConfigSubstitution: true
+	    )
+	    steps {
+		slackSend channel: '#jenkins-pipeline-demo', 
+			  color: 'good',
+			  message: "Deployment completed successfully....",
+                          tokenCredentialId: 'Jenkins-Slack'
+	    }	    
+	}	    
     }
 }
