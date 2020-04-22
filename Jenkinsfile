@@ -63,12 +63,12 @@ pipeline {
 	    }	    
 	} **/	    
 	stage('Deploy To Kubernetes Cluster') {
-	    kubernetesDeploy(
+	    steps {
+		kubernetesDeploy(
 		    configs: 'deployment.yml,service.yml',
 		    kubeconfigId: 'K8s_Config',
 		    enableConfigSubstitution: true
-	    )
-	    steps {
+	        )    
 		slackSend channel: '#jenkins-pipeline-demo', 
 			  color: 'good',
 			  message: "Deployment completed successfully....",
