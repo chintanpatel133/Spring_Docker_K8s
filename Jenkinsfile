@@ -7,7 +7,7 @@ pipeline {
 		slackSend channel: '#jenkins-pipeline-demo', 
 			  color: 'good',
 			  message: "New code is available on github. Now started to clone the latest code.",
-                          tokenCredentialId: 'Jenkins-Slack'
+                          tokenCredentialId: 'SLACK'
                 checkout scm
             }
         }
@@ -15,22 +15,22 @@ pipeline {
             steps {
                 script{
                     def mvnHome = tool name: "M2_HOME", type: "maven"
-        	        def mvnCMD = "${mvnHome}/bin/mvn"
-        	        sh "${mvnCMD} clean package"
+                    def mvnCMD = "${mvnHome}/bin/mvn"
+                    sh "${mvnCMD} clean package"
                 }
             }
-	        post{
+	    post{
                 success{
                     slackSend channel: '#jenkins-pipeline-demo',
                             color: 'good',
                             message: "Build is *${currentBuild.currentResult}:* *Job*: ${env.JOB_NAME} *Build Number*: ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
-                            tokenCredentialId: 'Jenkins-Slack'
+                            tokenCredentialId: 'SLACK'
                 }
                 failure{
                     slackSend channel: '#jenkins-pipeline-demo',
                             color: 'danger',
                             message: "Build is *${currentBuild.currentResult}:* *Job*: ${env.JOB_NAME} *Build Number*: ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
-                            tokenCredentialId: 'Jenkins-Slack'
+                            tokenCredentialId: 'SLACK'
                 }
             }
         }
@@ -40,7 +40,7 @@ pipeline {
 	        slackSend channel: '#jenkins-pipeline-demo', 
 			  color: 'good',
 			  message: "Docker image created successfully.",
-                          tokenCredentialId: 'Jenkins-Slack'
+                          tokenCredentialId: 'SLACK'
             }
         }
         stage('Push Docker Image to DockerHub') {
@@ -55,13 +55,13 @@ pipeline {
                     slackSend channel: '#jenkins-pipeline-demo',
                             color: 'good',
                             message: "Docker image pushed on Docker Hub successfully....",
-                            tokenCredentialId: 'Jenkins-Slack'
+                            tokenCredentialId: 'SLACK'
                 }
                 failure{
                     slackSend channel: '#jenkins-pipeline-demo',
                             color: 'danger',
                             message: "Docker image failed to pushed on Docker Hub.",
-                            tokenCredentialId: 'Jenkins-Slack'
+                            tokenCredentialId: 'SLACK'
                 }
             }
         }
@@ -73,7 +73,7 @@ pipeline {
 		slackSend channel: '#jenkins-pipeline-demo', 
 			  color: 'good',
 			  message: "Deployment completed successfully....",
-                          tokenCredentialId: 'Jenkins-Slack'
+                          tokenCredentialId: 'SLACK'
 	    }	    
 	  }    
     }
