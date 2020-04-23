@@ -18,4 +18,21 @@ spec:
          image: chintan671/mywebapp:latest
          ports:
           - containerPort: 8080
-            name: k8s-port 
+            name: k8s-port
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot-k8s
+  labels:
+    name: springboot-k8s
+spec:
+  ports:
+   - nodePort: 30163
+     port: 8081
+     targetPort: k8s-port
+     protocol: TCP
+  selector:
+    app: springboot-k8s
+  type: NodePort
