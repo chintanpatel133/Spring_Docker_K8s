@@ -13,9 +13,11 @@ pipeline {
         }
 	stage('Build the Project') {
             steps {
-		        def mvnHome = tool name: "M2_HOME", type: "maven"
-        	    def mvnCMD = "${mvnHome}/bin/mvn"
-        	    sh "${mvnCMD} clean package"
+                script{
+                    def mvnHome = tool name: "M2_HOME", type: "maven"
+        	        def mvnCMD = "${mvnHome}/bin/mvn"
+        	        sh "${mvnCMD} clean package"
+                }
             }
 	        post{
                 success{
