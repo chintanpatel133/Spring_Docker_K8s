@@ -36,7 +36,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-		sh 'docker build -t chintan671/mywebapp .'
+		sh "docker build -t chintan671/mywebapp:${env.BUILD_NUMBER} ."
 	        slackSend channel: '#jenkins-pipeline-demo', 
 			  color: 'good',
 			  message: "Docker image created successfully.",
@@ -47,7 +47,7 @@ pipeline {
             steps {
 		withCredentials([string(credentialsId: 'DOCKER_HUB_CREDS', variable: 'DOCKER_HUB_CREDS')]) {
             		sh "docker login -u chintan671 -p ${DOCKER_HUB_CREDS}"
- 			sh 'docker push chintan671/mywebapp'
+ 			sh "docker push chintan671/mywebapp:${env.BUILD_NUMBER}"
                 }
 	    }  		    
 	    post{
@@ -68,6 +68,7 @@ pipeline {
 	    
 	stage('Deploy To Kubernetes Cluster') {
 	    steps {
+		sh "sed -i 's/tagVersion/${env.BUILD_NUMBER}/g' studentapp-deploy/studentapp/studentapp-deployment.yaml"
 		sh 'kubectl apply -f deployment.yml'
 		sh 'kubectl apply -f service.yml'
 		slackSend channel: '#jenkins-pipeline-demo', 
