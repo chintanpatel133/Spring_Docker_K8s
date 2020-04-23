@@ -13,7 +13,9 @@ pipeline {
         }
 	stage('Build the Project') {
             steps {
-		sh 'mvn clean package -Dstyle.color=never'
+		def mvnHome = tool name: "M2_HOME", type: "maven"
+        	def mvnCMD = "${mvnHome}/bin/mvn"
+        	sh "${mvnCMD} clean package"
             }
 	    post{
                 success{
@@ -41,9 +43,9 @@ pipeline {
         }
         stage('Push Docker Image to DockerHub') {
             steps {
-		withCredentials([string(credentialsId: 'DockerHubPwd', variable: 'Password_DockeHub')]) {
-            		sh "docker login -u chintan671 -p ${Password_DockeHub}"
- 			    sh 'docker push chintan671/mywebapp'
+		withCredentials([string(credentialsId: 'DOCKER_HUB_CREDS', variable: 'DOCKER_HUB_CREDS')]) {
+            		sh "docker login -u chintan671 -p ${DOCKER_HUB_CREDS}"
+ 			sh 'docker push chintan671/mywebapp'
                 }
 	    }  		    
 	    post{
@@ -61,7 +63,7 @@ pipeline {
                 }
             }
         }
-	/**    
+	    
 	stage('Deploy To Kubernetes Cluster') {
 	    steps {
 		sh 'kubectl apply -f deployment.yml'
@@ -71,19 +73,6 @@ pipeline {
 			  message: "Deployment completed successfully....",
                           tokenCredentialId: 'Jenkins-Slack'
 	    }	    
-	} **/	    
-	stage('Deploy To Kubernetes Cluster') {
-	    steps {
-		kubernetesDeploy(
-		    configs: 'deployment.yml,service.yml',
-		    kubeconfigId: 'K8s-Config',
-		    enableConfigSubstitution: true
-	        )    
-		slackSend channel: '#jenkins-pipeline-demo', 
-			  color: 'good',
-			  message: "Deployment completed successfully....",
-                          tokenCredentialId: 'Jenkins-Slack'
-	    }	    
-	}	    
+	}    
     }
 }
