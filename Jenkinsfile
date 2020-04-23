@@ -68,7 +68,7 @@ pipeline {
 	    
 	stage('Deploy To Kubernetes Cluster') {
 	    steps {
-		sh "sed -i 's/tagVersion/${env.BUILD_NUMBER}/g' deployment.yaml"
+		sh "sed -i 's/tagVersion/${env.BUILD_NUMBER}/g' deployment.yml"
 		sh 'kubectl apply -f deployment.yml'
 		sh 'kubectl apply -f service.yml'
 		slackSend channel: '#jenkins-pipeline-demo', 
