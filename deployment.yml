@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
        - name: springboot-k8s
-         image: chintan671/mywebapp:latest
+         image: chintan671/mywebapp:tagVersion
          ports:
           - containerPort: 8080
             name: k8s-port
