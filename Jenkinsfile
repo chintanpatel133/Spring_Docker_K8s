@@ -76,7 +76,7 @@ pipeline {
 	    steps {
 		kubernetesDeploy(
 		    configs: 'deployment.yml,service.yml',
-		    kubeconfigId: 'K8s_Config',
+		    kubeconfigId: 'K8s-Config',
 		    enableConfigSubstitution: true
 	        )    
 		slackSend channel: '#jenkins-pipeline-demo', 
