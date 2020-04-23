@@ -13,11 +13,11 @@ pipeline {
         }
 	stage('Build the Project') {
             steps {
-		def mvnHome = tool name: "M2_HOME", type: "maven"
-        	def mvnCMD = "${mvnHome}/bin/mvn"
-        	sh "${mvnCMD} clean package"
+		        def mvnHome = tool name: "M2_HOME", type: "maven"
+        	    def mvnCMD = "${mvnHome}/bin/mvn"
+        	    sh "${mvnCMD} clean package"
             }
-	    post{
+	        post{
                 success{
                     slackSend channel: '#jenkins-pipeline-demo',
                             color: 'good',
@@ -73,6 +73,6 @@ pipeline {
 			  message: "Deployment completed successfully....",
                           tokenCredentialId: 'Jenkins-Slack'
 	    }	    
-	}    
+	  }    
     }
 }
