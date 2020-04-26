@@ -18,7 +18,7 @@ public class SpringBootDockerApplication extends SpringBootServletInitializer {
 		return "**********  Welcome to Kubernets Container World **********";
 	}
 
-        @GetMapping("/hello")
+        @GetMapping("/learn")
 	public String getInfo() {
 		return "$$$$$ HAPPY LEARNING  $$$$";
 	}
