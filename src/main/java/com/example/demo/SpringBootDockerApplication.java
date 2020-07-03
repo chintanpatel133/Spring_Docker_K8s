@@ -22,6 +22,11 @@ public class SpringBootDockerApplication extends SpringBootServletInitializer {
 	public String getInfo() {
 		return "$$$$$ HAPPY LEARNING  $$$$";
 	}
+	
+	@GetMapping("/test")
+	public String getInfo() {
+		return "!!!!! HAPPY Testing  !!!!!!!";
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootDockerApplication.class, args);
